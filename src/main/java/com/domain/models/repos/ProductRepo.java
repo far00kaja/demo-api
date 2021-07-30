@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 public interface ProductRepo extends CrudRepository<Product, Long>{
-
+// Learning Spring Data JPA Custom Query
     List<Product> findByNameContains(String name);
     
     @Query("SELECT p FROM Product p WHERE p.name = :name")

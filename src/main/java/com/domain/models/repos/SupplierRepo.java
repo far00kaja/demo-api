@@ -8,6 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 
 
 public interface SupplierRepo extends CrudRepository<Supplier, Long>{
+// Derived Query Methods in Spring Data JPA Repositories
 
     Supplier findByEmail(String email);
 
