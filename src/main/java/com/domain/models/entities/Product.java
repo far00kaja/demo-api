@@ -15,17 +15,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+// import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+// import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-// import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "tbl_product")
-@JsonIdentityInfo(
-    generator = ObjectIdGenerators.PropertyGenerator.class, 
-    property = "id"
-)
+// @JsonIdentityInfo(
+//     generator = ObjectIdGenerators.PropertyGenerator.class, 
+//     property = "id"
+// ) 
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -54,7 +54,7 @@ public class Product implements Serializable {
         joinColumns = @JoinColumn(name = "product_id"),
         inverseJoinColumns = @JoinColumn(name = "supplier_id")
         )
-        // @JsonManagedReference
+        @JsonManagedReference
         private Set<Supplier> suppliers;
 
     public Product() {
