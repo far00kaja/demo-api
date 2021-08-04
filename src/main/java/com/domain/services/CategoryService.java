@@ -2,14 +2,18 @@ package com.domain.services;
 
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import com.domain.models.entities.Category;
 import com.domain.models.repos.CategoryRepo;
 
+import org.hibernate.Filter;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 
 @Service
 @Transactional
@@ -17,6 +21,9 @@ public class CategoryService {
     
     @Autowired
     private CategoryRepo categoryRepo;
+
+    @Autowired
+    private EntityManager entityManager;
 
     public Category save(Category category){
         if (category.getId() != null){
@@ -37,8 +44,15 @@ public class CategoryService {
         return category.get();
     }
 
-    public Iterable<Category> findAll(){
-        return categoryRepo.findAll();
+    public Iterable<Category> findAll(boolean isDeleted){
+        // return categoryRepo.findAll();
+        Session session = entityManager.unwrap(Session.class);
+        Filter filter = session.enableFilter("deletedCategoryFilter");
+        filter.setParameter("isDeleted", isDeleted);
+        Iterable<Category> category = categoryRepo.findAll();
+        session.disableFilter("deletedCategoryFilter");
+        return category; 
+
     }
 
     public void removeOne(Long id){

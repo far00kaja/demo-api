@@ -9,8 +9,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.SQLDelete;
+// import org.hibernate.annotations.Where;
+
 @Entity
 @Table(name = "tbl_categories")
+@SQLDelete(sql = "UPDATE tbl_categories SET deleted = true WHERE id=?")
+// @Where(clause = "deleted = false")
+@FilterDef(name = "deletedCategoryFilter", parameters = @ParamDef(name = "isDeleted", type = "boolean"))
+@Filter(name = "deletedCategoryFilter", condition = "deleted = :isDeleted")
 public class Category extends BaseEntity<String> implements Serializable{
     
     @Id
@@ -19,6 +29,17 @@ public class Category extends BaseEntity<String> implements Serializable{
 
     @Column(length = 100, nullable = false, unique = true)
     private String name;
+
+    private boolean deleted = Boolean.FALSE; //false = not deleted, TRUE= deleted
+
+    
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 
     public Long getId() {
         return id;
